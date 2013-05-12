@@ -1,0 +1,160 @@
+{ 
+  "_type": "Scene", 
+  "_id": 1, 
+  "camera": { 
+    "_type": "Camera", 
+    "_id": 2, 
+    "frame": { 
+      "o": [ 10.000000, 10.000000, 10.000000 ], 
+      "x": [ -0.707107, 0.707107, 0.000000 ], 
+      "y": [ -0.408248, -0.408248, 0.816497 ], 
+      "z": [ 0.577350, 0.577350, 0.577350 ]
+    }, 
+    "view_dist": 17.320509, 
+    "image_width": 1.000000, 
+    "image_height": 1.000000, 
+    "image_dist": 1.000000, 
+    "focus_dist": 1.000000, 
+    "focus_aperture": 0.000000, 
+    "orthographic": false
+  }, 
+  "lights": { 
+    "_type": "LightGroup", 
+    "_id": 3, 
+    "lights": [ 
+      { 
+        "_type": "PointLight", 
+        "_id": 4, 
+        "frame": { 
+          "o": [ 0.000000, 5.000000, 5.000000 ], 
+          "x": [ 1.000000, 0.000000, 0.000000 ], 
+          "y": [ 0.000000, 1.000000, 0.000000 ], 
+          "z": [ 0.000000, 0.000000, 1.000000 ]
+        }, 
+        "intensity": [ 50.000000, 50.000000, 50.000000 ]
+      }
+    ]
+  }, 
+  "prims": { 
+    "_type": "PrimitiveGroup", 
+    "_id": 5, 
+    "prims": [ 
+      { 
+        "_type": "ParticleSystem", 
+        "_id": 6, 
+        "frame": { 
+          "o": [ -1.500000, -1.500000, 0.000000 ], 
+          "x": [ 1.000000, 0.000000, 0.000000 ], 
+          "y": [ 0.000000, 1.000000, 0.000000 ], 
+          "z": [ 0.000000, 0.000000, 1.000000 ]
+        }, 
+        "material": { 
+          "_type": "Phong", 
+          "_id": 7, 
+          "diffuse": [ 0.750000, 0.750000, 0.750000 ], 
+          "specular": [ 0.150000, 0.150000, 0.150000 ], 
+          "reflection": [ 0.000000, 0.000000, 0.000000 ], 
+          "exponent": 100.000000, 
+          "use_reflected": false
+        }, 
+        "force_gravity": [ 0.000000, 0.000000, -9.810000 ], 
+        "force_wind": [ 100.000000, 0.000000, 0.000000 ], 
+        "force_airfriction": 0.100000, 
+        "simulation_fps": 1000, 
+        "simulation_dumping": 0.500000, 
+        "source_shape": { 
+          "_type": "Sphere", 
+          "_id": 8, 
+          "center": [ 0.000000, 0.000000, 0.000000 ], 
+          "radius": 1.000000
+        }, 
+        "particles_per_sec": [ 50, 150 ], 
+        "particles_init_timer": [ 1.000000, 2.000000 ], 
+        "particles_init_vel": [ 0.100000, 0.200000 ], 
+        "particles_init_radius": [ 0.010000, 0.020000 ], 
+        "particles_init_density": [ 1000.000000, 1000.000000 ]
+      }, 
+      { 
+        "_type": "ParticleSystem", 
+        "_id": 9, 
+        "frame": { 
+          "o": [ 1.500000, -1.500000, 0.000000 ], 
+          "x": [ 1.000000, 0.000000, 0.000000 ], 
+          "y": [ 0.000000, 1.000000, 0.000000 ], 
+          "z": [ 0.000000, 0.000000, 1.000000 ]
+        }, 
+        "material": { 
+          "_ref": 7
+        }, 
+        "force_gravity": [ 0.000000, 0.000000, -9.810000 ], 
+        "force_wind": [ 100.000000, 0.000000, 0.000000 ], 
+        "force_airfriction": 0.100000, 
+        "simulation_fps": 1000, 
+        "simulation_dumping": 0.500000, 
+        "source_shape": { 
+          "_type": "Quad", 
+          "_id": 10, 
+          "width": 1.000000, 
+          "height": 1.000000
+        }, 
+        "particles_per_sec": [ 50, 150 ], 
+        "particles_init_timer": [ 1.000000, 2.000000 ], 
+        "particles_init_vel": [ 0.100000, 0.200000 ], 
+        "particles_init_radius": [ 0.010000, 0.020000 ], 
+        "particles_init_density": [ 1000.000000, 1000.000000 ]
+      }, 
+      { 
+        "_type": "Cloth", 
+        "_id": 11, 
+        "frame": { 
+          "o": [ -1.500000, 1.500000, 0.000000 ], 
+          "x": [ 1.000000, 0.000000, 0.000000 ], 
+          "y": [ 0.000000, 1.000000, 0.000000 ], 
+          "z": [ 0.000000, 0.000000, 1.000000 ]
+        }, 
+        "material": { 
+          "_ref": 7
+        }, 
+        "force_gravity": [ 0.000000, 0.000000, -9.810000 ], 
+        "force_wind": [ 100.000000, 0.000000, 0.000000 ], 
+        "force_airfriction": 0.100000, 
+        "simulation_fps": 1000, 
+        "simulation_dumping": 0.500000, 
+        "source_grid": [ 10, 10 ], 
+        "source_size": [ 2.000000, 2.000000 ], 
+        "cloth_stretch": 1000000.000000, 
+        "cloth_shear": 1000000.000000, 
+        "cloth_bend": 1000000.000000, 
+        "cloth_dump": 5.000000, 
+        "cloth_density": 1.000000, 
+        "pinned": [ 5 ]
+      }, 
+      { 
+        "_type": "Cloth", 
+        "_id": 12, 
+        "frame": { 
+          "o": [ 1.500000, 1.500000, 0.000000 ], 
+          "x": [ 1.000000, 0.000000, 0.000000 ], 
+          "y": [ 0.000000, 1.000000, 0.000000 ], 
+          "z": [ 0.000000, 0.000000, 1.000000 ]
+        }, 
+        "material": { 
+          "_ref": 7
+        }, 
+        "force_gravity": [ 0.000000, 0.000000, -9.810000 ], 
+        "force_wind": [ 100.000000, 0.000000, 0.000000 ], 
+        "force_airfriction": 0.100000, 
+        "simulation_fps": 1000, 
+        "simulation_dumping": 0.500000, 
+        "source_grid": [ 10, 10 ], 
+        "source_size": [ 2.000000, 2.000000 ], 
+        "cloth_stretch": 1000000.000000, 
+        "cloth_shear": 1000000.000000, 
+        "cloth_bend": 1000000.000000, 
+        "cloth_dump": 5.000000, 
+        "cloth_density": 1.000000, 
+        "pinned": [ 0, 10 ]
+      }
+    ]
+  }
+}
