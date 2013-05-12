@@ -30,11 +30,9 @@ inline vec3f keyframed_value(KeyframedValue* keyframed, float time) {
     auto value = zero3f;
 
     int k = -1;
-    float cont_pts[keyframed->degree+ 1 ];
-
     // Get K
     for  (int i = 0; (i + 1) < keyframed->times.size(); i++) {
-        if (keyframed->times[i] >= time && keyframed->times[i+1] <= time) {
+        if (time >= keyframed->times[i] && time <= keyframed->times[i+1]) {
             k = i;
             break;
 
@@ -47,8 +45,8 @@ inline vec3f keyframed_value(KeyframedValue* keyframed, float time) {
         value += bernstein(u, i, keyframed->degree) * keyframed->values[k * (keyframed->degree + 1) + i];
 
     }
-
     return value;
+
 }
 
 ///@}
