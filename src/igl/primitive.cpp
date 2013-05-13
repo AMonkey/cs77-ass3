@@ -130,8 +130,38 @@ void skinned_bone_frames(SkinnedSurface* skinned, float time, vector<frame3f>& p
     pose_frames.resize(skinned->bones.size(), identity_frame3f);
     rest_frames.resize(skinned->bones.size(), identity_frame3f);
 
-    put_your_code_here("Bone Frames");      // compute the pose and rest frames for each bone wrt to root bone frame
-                                            // NOTE: bone->frame_rest and bone->frame_pose are wrt to the frame of their parent bone
+    // compute the pose and rest frames for each bone wrt to root bone frame
+    // NOTE: bone->frame_rest and bone->frame_pose are wrt to the frame of their parent bone
+
+    for (int i = 0; i < skinned->bones.size(); i++) {
+        // Calculate rest frame
+        auto parent = skinned->bones[i]->parent;
+        if (parent >= 0) {
+            rest_frames[i] = transform_frame(skinned->bones[i]->frame_rest, skinned->bones[parent]->frame_rest);
+
+        }
+        else {
+            rest_frames[i] = skinned->bones[i]->frame_rest;
+
+        }
+
+        // Calculate pose frame
+        // rotating the identity frame about the major axes in ZYX order
+        TransformedSurface *t = new TransformedSurface();
+        t->rotation_euler = skinned->bones[i]->rotation_euler;
+        t->anim_rotation_euler = skinned->bones[i]->anim_rotation_euler;
+        pose_frames[i] = transform_frame(transformed_matrix(t, time), pose_frames[i]);
+
+        // translating by the origin of the rest frame
+        pose_frames[i].o += skinned->bones[i]->frame_rest.o;
+
+        // changing to object's frame by transforming wrt to the pose frame of parent bone
+        if (parent >= 0)
+            pose_frames[i] = transform_frame(pose_frames[i], pose_frames[parent]);
+
+        delete t;
+
+    }
 }
 
 /// Computes the pose position for skinned mesh
