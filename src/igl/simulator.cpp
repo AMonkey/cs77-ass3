@@ -28,6 +28,19 @@ void simulator_update(ParticleSimulator* simulator, float dt) {
 /// @param simulator Contains data to update and functions to perform the update
 /// @param dt The number of seconds to advance the simulator (time delta)
 void simulator_update_step(ParticleSimulator* simulator, float dt) {
-    put_your_code_here("Particles Update");
+    for (Particle &p : simulator->particles) {
+        // Calculate force
+        auto F = simulator->force(p);
+
+        // Update velocity: v(t + dt) = v(t) + a(t)*dt, a(t) = (F/m)
+        p.vel += (dt / p.mass) * F;
+
+        // Update positions: p(t + dt) = p(t) + v(t)dt + 0.5a(t)dt^2, a(t) = (F/m)
+        p.pos += p.vel * dt + ((dt*dt)/(2*p.mass)) * F;
+
+        // Update timer
+        p.timer -= dt;
+
+    }
 }
 

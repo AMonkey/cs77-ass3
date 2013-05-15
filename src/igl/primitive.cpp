@@ -217,8 +217,9 @@ void primitive_simulation_init(Primitive* prim) {
         // setup forces
         simulated->_simulator->force = [simulated](const Particle& p) -> vec3f {
             vec3f force = zero3f;
-            put_your_code_here("Particles Forces");     // compute the forces acting on the particle (ex: gravity, wind)
-            return force;
+
+            // F = ma
+            return p.mass * simulated->force_gravity;
         };
 
         if(is<ParticleSystem>(simulated)) {
@@ -226,7 +227,34 @@ void primitive_simulation_init(Primitive* prim) {
             psys->_simulator->begin_update = [psys](float dt){
                 int n = round(dt*psys->_rng.next_int(psys->particles_per_sec));     // number of particles to create
 
-                put_your_code_here("Particle Creation/Deletion");                   // delete "dead" particles, create new particles
+                // Delete particles
+                //for (Particle p : psys->_simulator->particles) {
+                for (int i = 0; i < psys->_simulator->particles.size(); i++) {
+                    auto p = psys->_simulator->particles[i];
+                    if (p.timer <= 0)
+                        psys->_simulator->particles.erase(psys->_simulator->particles.begin()+i);
+
+                }
+
+                // Create particles
+                for (int i = 0; i < n; i++) {
+                    Particle *p = new Particle();
+
+                    ShapeSample ss = shape_sample_uniform(psys->source_shape, psys->_rng.next_vec2f());
+
+                    p->pos = ss.frame.o;
+                    p->norm = ss.frame.z;
+
+                    // Starts with random values within given range in simulator
+                    p->vel = vec3f(0, 0, psys->_rng.next_float(psys->particles_init_vel));
+                    p->radius = psys->_rng.next_float(psys->particles_init_radius);
+                    p->timer = psys->_rng.next_float(psys->particles_init_timer);
+                    // m = rho * V, V = 4/3 pi r^3
+                    p->mass = psys->_rng.next_float(psys->particles_init_density) * (4/3) * pi * pow(p->radius, 3);
+
+                    psys->_simulator->particles.push_back(*p);
+
+                }
             };
             psys->_simulator->end_update = [psys](float dt){
                 psys->_points->pos.resize(psys->_simulator->particles.size());
