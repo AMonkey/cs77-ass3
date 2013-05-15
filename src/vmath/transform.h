@@ -33,7 +33,20 @@ template<typename T> inline vec3<T> transform_direction(const mat4<T>& m, const 
 template<typename T> inline vec3<T> transform_normal(const mat4<T>& m, const vec3<T>& v) { return normalize(transform_vector(m,v)); }
 template<typename T> inline ray3<T> transform_ray(const mat4<T>& m, const ray3<T>& v) { return ray3<T>(transform_point(m,v.e),transform_vector(m,v.d),v.tmin,v.tmax); }
 template<typename T> inline range3<T> transform_bbox(const mat4<T>& m, const range3<T>& v) { range3<T> ret; for(auto vv : corners(v)) ret = runion(ret,transform_point(m,vv)); return ret; }
-template<typename T> inline frame3<T> transform_frame(const mat4<T>& m, const frame3<T>& v) { frame3<T> ret; ret.o = transform_point(m,v.o); ret.x = transform_direction(m,v.x); ret.y = transform_direction(m,v.y); ret.z = cross(ret.x,ret.y); ret = orthonormalize(ret); return ret; }
+
+template<typename T> inline frame3<T>
+transform_frame(const mat4<T>& m, const frame3<T>& v) {
+	frame3<T> ret;
+
+	ret.o = transform_point(m,v.o);
+	ret.x = transform_direction(m,v.x);
+	ret.y = transform_direction(m,v.y);
+	ret.z = cross(ret.x,ret.y);
+	ret = orthonormalize(ret);
+
+	return ret;
+
+}
 ///@}
 
 ///@name 2D Frame-Element Transforms

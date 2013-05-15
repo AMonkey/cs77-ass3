@@ -199,16 +199,56 @@ ShapeSample shape_sample_uniform(Shape* shape, const vec2f& uv) {
 }
 
 vector<vec3f>* shape_get_pos(Shape* shape) {
-    if(is<PointSet>(shape)) return & cast<PointSet>(shape)->pos;
-    else if(is<LineSet>(shape)) return & cast<LineSet>(shape)->pos;
-    else if(is<TriangleMesh>(shape)) return & cast<TriangleMesh>(shape)->pos;
-    else if(is<Mesh>(shape)) return & cast<Mesh>(shape)->pos;
-    else if(is<FaceMesh>(shape)) return & cast<FaceMesh>(shape)->pos;
-    else if(is<Spline>(shape)) return & cast<Spline>(shape)->pos;
-    else if(is<Patch>(shape)) return & cast<Patch>(shape)->pos;
-    else if(is<CatmullClarkSubdiv>(shape)) return & cast<CatmullClarkSubdiv>(shape)->pos;
-    else if(is<Subdiv>(shape)) return & cast<Subdiv>(shape)->pos;
-    else return nullptr;
+    if(is<PointSet>(shape)) {
+        //message_va("Woo pointset!!\n");
+        return & cast<PointSet>(shape)->pos;
+
+    }
+    else if(is<LineSet>(shape)) {
+        //message_va("Woo hoo lineset!");
+        return & cast<LineSet>(shape)->pos;
+
+    }
+    else if(is<TriangleMesh>(shape)) {
+        //message_va("Woo hoo lineset!");
+        return & cast<TriangleMesh>(shape)->pos;
+
+    }
+    else if(is<Mesh>(shape)) {
+        //message_va("Woo hoo mesh!");
+        return & cast<Mesh>(shape)->pos;
+
+    }
+    else if(is<FaceMesh>(shape)) {
+        //message_va("Woo hoo face mesh!");
+        return & cast<FaceMesh>(shape)->pos;
+
+    }
+    else if(is<Spline>(shape)){
+        //message_va("Woo hoo spline!");
+        return & cast<Spline>(shape)->pos;
+
+    }
+    else if(is<Patch>(shape)) {
+        //message_va("Woo hoo patch!");
+        return & cast<Patch>(shape)->pos;
+
+    }
+    else if(is<CatmullClarkSubdiv>(shape)) {
+        //message_va("Woo hoo catclark!");
+        return & cast<CatmullClarkSubdiv>(shape)->pos;
+
+    }
+    else if(is<Subdiv>(shape)) {
+        //message_va("Woo hoo subdiv!");
+        return & cast<Subdiv>(shape)->pos;
+
+    }
+    else {
+        //message_va("Woo hoo NOTHIN!");
+        return nullptr;
+
+    }
 }
 
 vector<vec3f>* shape_get_norm(Shape* shape) {
