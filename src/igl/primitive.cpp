@@ -137,7 +137,7 @@ void skinned_bone_frames(SkinnedSurface* skinned, float time, vector<frame3f>& p
         // Calculate rest frame
         auto parent = skinned->bones[i]->parent;
         if (parent >= 0) {
-            rest_frames[i] = transform_frame(skinned->bones[i]->frame_rest, skinned->bones[parent]->frame_rest);
+            rest_frames[i] = transform_frame(rest_frames[parent], skinned->bones[i]->frame_rest);
 
         }
         else {
@@ -157,7 +157,7 @@ void skinned_bone_frames(SkinnedSurface* skinned, float time, vector<frame3f>& p
 
         // changing to object's frame by transforming wrt to the pose frame of parent bone
         if (parent >= 0)
-            pose_frames[i] = transform_frame(pose_frames[i], pose_frames[parent]);
+            pose_frames[i] = transform_frame(pose_frames[parent], pose_frames[i]);
 
         delete t;
 
@@ -168,16 +168,36 @@ void skinned_bone_frames(SkinnedSurface* skinned, float time, vector<frame3f>& p
 /// @param skinned The skinned mesh to update
 /// @param time The time at which to compute each bone's pose frame
 void skinned_update_pose(SkinnedSurface* skinned, float time) {
+    // Nifty baby-cache
     if(time == skinned->_posed_cached_time) return;
     skinned->_posed_cached_time = time;
+
+    //return;
 
     vector<frame3f> pose_frames, rest_frames;
     skinned_bone_frames(skinned, time, pose_frames, rest_frames);
 
-    auto& rest_pos = *shape_get_pos(skinned->shape);            // vertex rest position
-    auto& pose_pos = *shape_get_pos(skinned->_posed_cached);    // vertex pose position
+    auto &rest_pos = *shape_get_pos(skinned->shape);            // vertex rest position as a mesh
+    auto &pose_pos = *shape_get_pos(skinned->_posed_cached);    // vertex pose position
 
-    put_your_code_here("Mesh Skinning");        // compute the pose position for each vertex
+    for (int i = 0; i < pose_pos.size(); i++) { // Vertices
+        // Need to zero out position
+        pose_pos[i] = zero3f;
+
+        //for (int *j = skinned->weights[i]->idx.begin();  j < skinned->weights[i]->idx.begin()+skinned->weights[i]->idx.size(); j++) { // Bones
+        for (int j = 0; j < skinned->weights[i]->idx.size(); j++) { // Bones
+            auto bone_index = skinned->weights[i]->idx[j];
+            auto w = skinned->weights[i]->weight[j];
+
+            /* From Notes:
+             * you will transform the rest position of each vertex from object frame to rest frame of a bone,
+             * then transform from pose frame of the bone back to object frame
+             */
+            auto p = transform_point( pose_frames[bone_index], transform_point_inverse(rest_frames[bone_index], rest_pos[i]) );
+            pose_pos[i] += w * p;
+
+        }
+    }
 }
 
 range1f primitive_animation_interval(Primitive* prim) {
